@@ -14,7 +14,7 @@ data/
 Usage:
     python src/prepare_dataset.py --n_content 50 --size 512
 """
-
+from tqdm import tqdm
 import os, argparse, random
 from pathlib import Path
 from PIL import Image
@@ -60,6 +60,64 @@ def download_coco_images(output_dir, n_images=100, size=256):
         img.save(f"{output_dir}/{i:04d}.jpg")
     print(f"✅ Saved {len(subset)} content images to {output_dir}/")
 
+def download_flickr_images(output_dir, n_images=None, size=512):
+    """
+    Download images from Adyakanta/test_flickr30k via HuggingFace.
+    Only saves images (resized), ignores captions/metadata.
+    
+    Args:
+        output_dir (str): Path to save images.
+        n_images (int, optional): Number of images to download. If None, download all.
+        size (int): Size to resize images to (square). Set to None to keep original size.
+    """
+    print(f"⏳ Loading Flickr30k dataset (split='test')...")
+    try:
+        ds = load_dataset("Adyakanta/test_flickr30k", split="test")
+    except Exception as e:
+        print(f"Error loading dataset: {e}")
+        return
+
+    os.makedirs(output_dir, exist_ok=True)
+    
+    total_samples = len(ds)
+    print(f"Dataset loaded. Total available images: {total_samples}")
+
+    if n_images is not None:
+        limit = min(n_images, total_samples)
+        indices = random.sample(range(total_samples), limit)
+        print(f"Sampling {limit} random images...")
+    else:
+        indices = range(total_samples)
+        print(f"Processing all {total_samples} images...")
+
+    count = 0
+    for i in tqdm(indices, desc="Saving images"):
+        try:
+            item = ds[i]
+            
+            img_id_raw = str(item['img_id'])
+            if img_id_raw.endswith('.jpg'):
+                img_name = img_id_raw
+            else:
+                img_name = f"{img_id_raw}.jpg"
+            
+            img = item['image'].convert("RGB") #make sure RGB
+            
+            # Resize if size specified
+            if size is not None:
+                img = img.resize((size, size), Image.Resampling.LANCZOS)
+            
+            # 保存路径
+            save_path = os.path.join(output_dir, img_name)
+            img.save(save_path, quality=95)
+            
+            count += 1
+            
+        except Exception as e:
+            print(f"Skipping index {i} due to error: {e}")
+            continue
+
+    print(f"✅ Successfully saved {count} content images to {output_dir}/")
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default="data", help="Root output directory")
@@ -68,9 +126,13 @@ def main():
     args = parser.parse_args()
 
     download_style_images(args.out, size=args.size)
-    download_coco_images(os.path.join(args.out, "content"),
-                         n_images=args.n_content, size=args.size)
+    # download_coco_images(os.path.join(args.out, "content_coco"),
+    #                      n_images=args.n_content, size=args.size)
+    download_flickr_images(os.path.join(args.out, "content_flickr"),
+                           n_images=args.n_content, size=args.size)
     print("🎨 Dataset preparation complete!")
+
+
 
 if __name__ == "__main__":
     main()

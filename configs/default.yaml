@@ -1,5 +1,5 @@
 #data path
-content_path: "./data/content"
+content_path: "./data/content_coco"
 style_path: "./data/style/van_gogh/000.jpg"
 
 #output path
