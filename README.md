@@ -47,13 +47,13 @@ wget https://openaipublic.blob.core.windows.net/diffusion/jul-2021/512x512_diffu
 
 1. Set up the run configurations in the `configs/` folder
 
-2. Run `main.py`
+2. Run `main.py`. First run with `run_mode: "style_removal"`. Second run with `run_mode: "style_transfer"`.
 
 ```
 python main.py --config configs/default.yaml
 ```
 
-3. RUN `evaluate.py`
+3. Run `evaluate.py`
 ```
  python evaluate.py --config configs/default.yaml
 ```
