@@ -56,3 +56,7 @@ python main.py --config configs/default.yaml
 ### Sample Output
 
 ![Sample Output](image_grid_output.png)
+
+### Sample Output with Style Mix
+
+![Sample Output](image_grid_output_style_mix.png)
