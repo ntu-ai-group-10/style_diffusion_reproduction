@@ -10,7 +10,7 @@ pretrained_model_path: "./models/checkpoints/512x512_diffusion.pt"
 
 #run parameters
 run_id: "test_run"
-run_mode: "style_removal" #options: "style_removal", "style_transfer"
+run_mode: "style_transfer" #options: "style_removal", "style_transfer"
 # run_mode: "style_transfer"
 
 device: "cuda" #options: "cpu", "cuda"
@@ -33,6 +33,7 @@ content_latent_path: "./output/test_run/content_latents/"
 style_color_path: "./data/style/van_gogh/000.jpg"
 style_gray_path: "./output/test_run/style_processed/style.pt"
 style_latent_path: "./output/test_run/style_latents/style.pt"
+generated_dir: "./output/test_run/content_stylized"
 
 t_trans: 601
 style_transfer_s_for: 40

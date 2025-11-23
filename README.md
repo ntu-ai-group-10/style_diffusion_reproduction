@@ -53,6 +53,11 @@ wget https://openaipublic.blob.core.windows.net/diffusion/jul-2021/512x512_diffu
 python main.py --config configs/default.yaml
 ```
 
+3. RUN `evaluate.py`
+```
+ python evaluate.py --config configs/default.yaml
+```
+
 ### Sample Output
 
 ![Sample Output](image_grid_output.png)
