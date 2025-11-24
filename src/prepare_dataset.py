@@ -126,8 +126,8 @@ def main():
     args = parser.parse_args()
 
     download_style_images(args.out, size=args.size)
-    # download_coco_images(os.path.join(args.out, "content_coco"),
-    #                      n_images=args.n_content, size=args.size)
+    download_coco_images(os.path.join(args.out, "content_coco"),
+                           n_images=args.n_content, size=args.size)
     download_flickr_images(os.path.join(args.out, "content_flickr"),
                            n_images=args.n_content, size=args.size)
     print("🎨 Dataset preparation complete!")
